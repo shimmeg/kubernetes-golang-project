@@ -28,9 +28,10 @@ func StartServer(addr string, endpoints map[string]func(writer http.ResponseWrit
 	}
 }
 
-func contentTypeMiddleware(handler http.Handler) http.Handler {
+func contentTypeMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
+		next.ServeHTTP(w, r)
 	})
 }
 
