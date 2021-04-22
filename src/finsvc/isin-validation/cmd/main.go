@@ -11,5 +11,5 @@ func main() {
 	endpoints["/isin/"] = pkg.IsinEndpointGenerator(validation.ValidateIsin)
 	endpoints["/health/"] = pkg.HealthCheckEndpointGenerator()
 
-	pkg.StartServer(":8080", endpoints)
+	pkg.StartServer(":8000", endpoints)
 }
