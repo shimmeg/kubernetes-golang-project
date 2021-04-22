@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: isin-validation-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: isin-validation-app
+  template:
+    metadata:
+      labels:
+        app: isin-validation-app
+    spec:
+      containers:
+        - name: isin-validation
+          image: aefimow/isin-validation:v3
+          ports:
+            - name: isin-validation-port
+              containerPort: 8000
+          livenessProbe:
+            httpGet:
+              port: 8000
+              path: /isin/?check=123
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 2
+          readinessProbe:
+            httpGet:
+              port: 8000
+              path: /health
+            initialDelaySeconds: 5
+            periodSeconds: 2
