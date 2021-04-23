@@ -8,5 +8,5 @@ spec:
   ports:
     - protocol: TCP
       port: 8000
-      targetPort: isin-validation-port
+      targetPort: isin-vld-port
   type: NodePort

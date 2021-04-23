@@ -14,9 +14,9 @@ spec:
     spec:
       containers:
         - name: isin-validation
-          image: aefimow/isin-validation:v3
+          image: aefimow/isin-validation:v4
           ports:
-            - name: isin-validation-port
+            - name: isin-vld-port
               containerPort: 8000
           livenessProbe:
             httpGet:
