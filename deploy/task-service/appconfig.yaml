@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: task-service-config
+data:
+  SERVER_PORT: 8000
+  MONGO_HOST: mongodb
+  MONGO_PORT: 27017
+  MONGO_DB: tasks-tracker
+  SSL: false
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-secret
+type: Opaque
+data:
+  MONGO_USER: YWVmaW1vdgo=
+  MONGO_PASS: YWVmaW1vdjEyMwo=
