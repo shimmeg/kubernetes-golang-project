@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  task-service:
+    image: aefimow/task-service:v2
+    depends_on:
+      - mongodb
+    container_name: task-service
+    environment:
+      - SERVER_PORT=8000
+      - MONGO_HOST=mongodb
+      - MONGO_PORT=27017
+      - MONGO_USER=aefimov
+      - MONGO_PASS=aefimov123
+      - MONGO_DB=tasks-tracker
+      - SSL=false
+    ports:
+      - 8000:8000
+    restart: always
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    environment:
+      - MONGO_INITDB_DATABASE=tasks-tracker
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root1234
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    ports:
+      - 27017:27017
+    restart: always

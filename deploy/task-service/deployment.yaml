@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-service-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: task-service-app
+  template:
+    metadata:
+      labels:
+        app: task-service-app
+    spec:
+      containers:
+        - name: task-service
+          image: aefimow/task-service:v1
+          ports:
+            - name: tsksvc-port
+              containerPort: 8000
+          livenessProbe:
+            httpGet:
+              port: 8000
+              path: /health
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 2
+          readinessProbe:
+            httpGet:
+              port: 8000
+              path: /health
+            initialDelaySeconds: 5
+            periodSeconds: 2
