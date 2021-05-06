@@ -18,42 +18,11 @@ spec:
           ports:
             - name: tsksvc-port
               containerPort: 8000
-          env:
-            - name: SERVER_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: task-service-config
-                  key: SERVER_PORT
-            - name: MONGO_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: task-service-config
-                  key: MONGO_HOST
-            - name: MONGO_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: task-service-config
-                  key: MONGO_PORT
-            - name: MONGO_DB
-              valueFrom:
-                configMapKeyRef:
-                  name: task-service-config
-                  key: MONGO_DB
-            - name: SSL
-              valueFrom:
-                configMapKeyRef:
-                  name: task-service-config
-                  key: SSL
-            - name: MONGO_USER
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: MONGO_USER
-            - name: MONGO_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: MONGO_PASS
+          envFrom:
+            - configMapRef:
+                name: task-service-config
+            - secretRef:
+                name: db-secret
           livenessProbe:
             httpGet:
               port: 8000

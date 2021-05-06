@@ -1,0 +1,32 @@
+replicaCount: 1
+
+image: aefimow/task-service:v2
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: NodePort
+  port: 8000
+
+externalMongo:
+  mongoHost: mongodb
+  mongoPort: 27017
+  mongoDB: tasks-tracker
+  mongoUsername: aefimov
+  mongoPassword: aefimov123
+
+sslEnabled: false
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  hosts:
+    - host: arch.homework
+      paths:
+      - path: /
+        backend:
+          serviceName: arch.homework
+          servicePort: 8000

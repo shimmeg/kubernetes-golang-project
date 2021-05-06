@@ -1,0 +1,19 @@
+fullnameOverride: mongodb
+auth:
+  rootPassword: root1234
+  username: aefimov
+  password: aefimov123
+  database: tasks-tracker
+
+service:
+  type: NodePort
+  port: 27017
+
+persistence:
+  enabled: true
+  size: 1Gi
+
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 250m

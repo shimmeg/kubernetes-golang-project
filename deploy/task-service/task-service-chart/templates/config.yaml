@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: task-service-config
+data:
+  MONGO_HOST: "{{ .Values.externalMongo.mongoHost }}"
+  MONGO_PORT: "{{ .Values.externalMongo.mongoPort }}"
+  MONGO_DB: "{{ .Values.externalMongo.mongoDB }}"
+  SSL: "{{ .Values.sslEnabled }}"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-secret
+type: Opaque
+data:
+  MONGO_USER: {{ printf "%s" .Values.externalMongo.mongoUsername | b64enc | quote }}
+  MONGO_PASS: {{ printf "%s" .Values.externalMongo.mongoPassword | b64enc | quote }}

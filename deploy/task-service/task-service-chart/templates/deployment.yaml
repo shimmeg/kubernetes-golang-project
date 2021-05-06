@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "task-service-chart.fullname" . }}
+  labels:
+    {{- include "task-service-chart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "task-service-chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "task-service-chart.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/config.yaml") . | sha256sum }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image }}"
+          ports:
+            - name: tsksvc-port
+              containerPort: 8000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: tsksvc-port
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: tsksvc-port
+          envFrom:
+            - configMapRef:
+                name: task-service-config
+            - secretRef:
+                name: db-secret
+          env:
+            - name: SERVER_PORT
+              value: "8000"
