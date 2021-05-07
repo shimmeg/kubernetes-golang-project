@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "initdb"
+spec:
+  template:
+    metadata:
+      name: "initdb"
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: check-mongo-ready
+          image: busybox:1.31
+          command: ['sh', '-c', 'until nc -z mongodb 27017; do echo waiting for mongodb; sleep 2; done;']
+      containers:
+        - name: initdb
+          env:
+            - name: MONGO_HOST
+              value: "mongodb"
+            - name: MONGO_PORT
+              value: "27017"
+            - name: MONGO_USER
+              value: "aefimov"
+            - name: MONGO_PASS
+              value: "aefimov123"
+            - name: MONGO_DB
+              value: "tasks-tracker"
+            - name: MONGO_COLLECTION
+              value: "tasks"
+          image: aefimow/mongo-init:v1
+  backoffLimit: 2
